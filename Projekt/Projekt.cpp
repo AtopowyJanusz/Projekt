@@ -34,11 +34,12 @@ void wypiszZasady()
     cout<<"Zacznijmy zabawe!"<<endl;    
 }
 
-void rysujFigure( int rozmiarFigury)
+void rysujFigure(int rozmiarFigury, int przesunieciePoziome, int przesunieciePionowe)
 {
     for (int wiersz = 0; wiersz < rozmiarFigury; wiersz++)
     {
-        gotoxy(szerokoscEkranu/2 - rozmiarFigury/2, wysokoscEkranu/2 - rozmiarFigury/2 + wiersz);
+        gotoxy(szerokoscEkranu/2 - rozmiarFigury/2 + przesunieciePoziome,
+                wysokoscEkranu/2 - rozmiarFigury/2 + wiersz + przesunieciePionowe);
         for(int kolumna = 0; kolumna < rozmiarFigury; kolumna++)
         {
             if(wiersz < rozmiarFigury/2)
@@ -73,7 +74,9 @@ void rysujFigure( int rozmiarFigury)
     
 int main()
 {
-    int rozmiarFigury;
+    int rozmiarFigury,
+        przesunieciePoziome = 0,
+        przesunieciePionowe = 0;
     char przycisk;
 
     // Pobranie szerokosci i wysokosci ekranu
@@ -92,7 +95,7 @@ int main()
     do
     {
         system("cls");
-        rysujFigure(rozmiarFigury);
+        rysujFigure(rozmiarFigury,przesunieciePoziome,przesunieciePionowe);
         przycisk = getch();
         
         switch(przycisk)
@@ -102,6 +105,18 @@ int main()
                 break;
             case '-':
                 rozmiarFigury--;
+                break;
+            case 'a':
+                przesunieciePoziome--;
+                break;
+            case 's':
+                przesunieciePionowe++; // dodajemy poniewaz rosnie w dol
+                break;
+            case 'w':
+                przesunieciePionowe--; // odejmujemy poniewaz maleje w gore
+                break;
+            case 'd':
+                przesunieciePoziome++;
                 break;
             default:
                 break;
