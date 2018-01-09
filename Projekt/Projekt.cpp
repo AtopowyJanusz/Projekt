@@ -21,13 +21,49 @@ void wypiszZasady()
     cout<<"UWAGA! figura bedzie poruszala sie tylko w obszarze twojego ekranu"<<endl;
     cout<<"Zacznijmy zabawe!"<<endl;    
 }
+
+void rysujFigure( int rozmiarFigury)
+{
+    for (int wiersz = 0; wiersz < rozmiarFigury; wiersz++)
+    {
+        for(int kolumna = 0; kolumna < rozmiarFigury; kolumna++)
+        {
+            if(wiersz < rozmiarFigury/2)
+            {
+                if(wiersz == kolumna)
+                {
+                    cout << znakAscii;
+                }
+                else if(wiersz+kolumna == rozmiarFigury - 1)
+                {
+                    cout << znakAscii;
+                }
+                else
+                {
+                    cout << " ";
+                }
+            }
+            else 
+            {
+                if(kolumna == rozmiarFigury/2)
+                {
+                    cout << znakAscii;
+                }
+                else
+                {
+                    cout << " ";
+                }
+            }
+        }
+        cout << endl;
+    }
+}
     
 int main()
 {
     int rozmiarFigury,
         szerokoscEkranu,
-        wysokoscEkranu
-        ;
+        wysokoscEkranu;
 
     // Pobranie szerokosci i wysokosci ekranu
     CONSOLE_SCREEN_BUFFER_INFO csbi;
@@ -41,42 +77,15 @@ int main()
     cin >> znakAscii;
     cout << "Teraz podaj poczatkowy rozmiar figury : ";
     cin >> rozmiarFigury;
+   
 
     system("cls");
 
-    for (int i=0; i<rozmiarFigury; i++)
-    {
-        for(int j=0; j<rozmiarFigury; j++)
-        {
-            if(i < rozmiarFigury/2)
-            {
-                if(i == j)
-                {
-                    cout << znakAscii;
-                }
-                else if(i+j == rozmiarFigury - 1)
-                {
-                    cout << znakAscii;
-                }
-                else
-                {
-                    cout << " ";
-                }
-            }
-            else 
-            {
-                if(j == rozmiarFigury/2)
-                {
-                    cout << znakAscii;
-                }
-                else
-                {
-                    cout << " ";
-                }
-            }
-        }
-        cout << endl;
-    }
+    rysujFigure(rozmiarFigury);
+
+
+
+
 
     getch();
     return EXIT_SUCCESS;
