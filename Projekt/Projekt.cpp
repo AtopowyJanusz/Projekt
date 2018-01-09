@@ -43,7 +43,41 @@ int main()
     cin >> rozmiarFigury;
 
     system("cls");
-    
+
+    for (int i=0; i<rozmiarFigury; i++)
+    {
+        for(int j=0; j<rozmiarFigury; j++)
+        {
+            if(i < rozmiarFigury/2)
+            {
+                if(i == j)
+                {
+                    cout << znakAscii;
+                }
+                else if(i+j == rozmiarFigury - 1)
+                {
+                    cout << znakAscii;
+                }
+                else
+                {
+                    cout << " ";
+                }
+            }
+            else 
+            {
+                if(j == rozmiarFigury/2)
+                {
+                    cout << znakAscii;
+                }
+                else
+                {
+                    cout << " ";
+                }
+            }
+        }
+        cout << endl;
+    }
+
     getch();
     return EXIT_SUCCESS;
 }
