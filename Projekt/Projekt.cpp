@@ -1,6 +1,5 @@
 #include <iostream>
 #include <conio.h>
-#include <string>
 #include <Windows.h>
 
 using namespace std;
@@ -8,9 +7,22 @@ using namespace std;
 // Podczas pisania aplikacji korzystalam miedzy innymi z pomocy z nastepujacych stron internetowych:
 // http://www.cplusplus.com/forum/general/58945/
 
+// stale
+const int ESCAPE = 27;
+
+// zmienne globalne
 char znakAscii;
+int szerokoscEkranu, wysokoscEkranu;
 
 HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+
+void gotoxy(int x, int y)
+{
+	COORD cursorPosition;
+	cursorPosition.X = x;
+	cursorPosition.Y = y;
+	SetConsoleCursorPosition(console,cursorPosition);
+}  
 
 void wypiszZasady()
 {
@@ -26,6 +38,7 @@ void rysujFigure( int rozmiarFigury)
 {
     for (int wiersz = 0; wiersz < rozmiarFigury; wiersz++)
     {
+        gotoxy(szerokoscEkranu/2 - rozmiarFigury/2, wysokoscEkranu/2 - rozmiarFigury/2 + wiersz);
         for(int kolumna = 0; kolumna < rozmiarFigury; kolumna++)
         {
             if(wiersz < rozmiarFigury/2)
@@ -55,15 +68,13 @@ void rysujFigure( int rozmiarFigury)
                 }
             }
         }
-        cout << endl;
     }
 }
     
 int main()
 {
-    int rozmiarFigury,
-        szerokoscEkranu,
-        wysokoscEkranu;
+    int rozmiarFigury;
+    char przycisk;
 
     // Pobranie szerokosci i wysokosci ekranu
     CONSOLE_SCREEN_BUFFER_INFO csbi;
@@ -77,16 +88,25 @@ int main()
     cin >> znakAscii;
     cout << "Teraz podaj poczatkowy rozmiar figury : ";
     cin >> rozmiarFigury;
-   
 
-    system("cls");
+    do
+    {
+        system("cls");
+        rysujFigure(rozmiarFigury);
+        przycisk = getch();
+        
+        switch(przycisk)
+        {
+            case '+':
+                rozmiarFigury++;
+                break;
+            case '-':
+                rozmiarFigury--;
+                break;
+            default:
+                break;
+        }
+    } while(przycisk != ESCAPE);
 
-    rysujFigure(rozmiarFigury);
-
-
-
-
-
-    getch();
     return EXIT_SUCCESS;
 }
