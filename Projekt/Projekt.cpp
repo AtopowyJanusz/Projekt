@@ -1,11 +1,14 @@
 #include <iostream>
 #include <conio.h>
+#include <string>
 #include <Windows.h>
 
 using namespace std;
 
 // Podczas pisania aplikacji korzystalam miedzy innymi z pomocy z nastepujacych stron internetowych:
 // http://www.cplusplus.com/forum/general/58945/
+// https://stackoverflow.com/questions/15575799/c-how-to-restrict-input-to-one-char-at-a-time
+// https://stackoverflow.com/questions/18728754/checking-input-value-is-an-integer
 
 // stale
 const int ESCAPE = 27;
@@ -106,7 +109,8 @@ int main()
         przesunieciePoziome = 0,
         przesunieciePionowe = 0;
     char przycisk;
-
+    string wejscie;
+    
     // Pobranie szerokosci i wysokosci ekranu
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(console,&csbi);
@@ -116,9 +120,28 @@ int main()
     wypiszZasady();
 
     cout << "Najpierw podaj znak ASCII, ktorym bedziemy rysowac: ";
-    cin >> znakAscii;
+    do {
+        getline(cin,wejscie);
+        if(wejscie.length() != 1)
+        {
+            cout << "Bledna wartosc. Podaj ponownie: ";
+        }
+        else {
+            znakAscii = wejscie[0];
+        }
+    } while (wejscie.length() != 1);
+
     cout << "Teraz podaj poczatkowy rozmiar figury: ";
-    cin >> rozmiarFigury;
+    do {
+        cin >> rozmiarFigury;
+        
+        if((cin.fail()) || (rozmiarFigury < 0) || (rozmiarFigury > wysokoscEkranu)) 
+        {
+            cin.clear();
+            cin.ignore(256,'\n');
+            cout << "Bledna wartosc rozmiaru figury. Podaj ponownie: ";
+        }
+    } while ((cin.fail()) || (rozmiarFigury < 0) || (rozmiarFigury > wysokoscEkranu));
 
     do
     {
@@ -129,31 +152,31 @@ int main()
         switch(przycisk)
         {
             case '+':
-                if(czyMogeWykonacRuch(rozmiarFigury+1,przesunieciePoziome,przesunieciePionowe))
+                if(czyMogeWykonacRuch(rozmiarFigury + 1,przesunieciePoziome,przesunieciePionowe))
                     rozmiarFigury++;
                 break;
             case '-':
-                if(czyMogeWykonacRuch(rozmiarFigury-1,przesunieciePoziome,przesunieciePionowe))
+                if(czyMogeWykonacRuch(rozmiarFigury - 1,przesunieciePoziome,przesunieciePionowe))
                     rozmiarFigury--;
                 break;
             case 'a':
             case 75:    // w lewos
-                if(czyMogeWykonacRuch(rozmiarFigury,przesunieciePoziome-1,przesunieciePionowe))
+                if(czyMogeWykonacRuch(rozmiarFigury,przesunieciePoziome - 1,przesunieciePionowe))
                     przesunieciePoziome--;
                 break;
             case 's':
             case 80:    // w dol
-                if(czyMogeWykonacRuch(rozmiarFigury,przesunieciePoziome,przesunieciePionowe+1))
+                if(czyMogeWykonacRuch(rozmiarFigury,przesunieciePoziome,przesunieciePionowe + 1))
                     przesunieciePionowe++; // dodajemy poniewaz rosnie w dol
                 break;
             case 'w':
             case 72:    // w gore
-                if(czyMogeWykonacRuch(rozmiarFigury,przesunieciePoziome,przesunieciePionowe-1))
+                if(czyMogeWykonacRuch(rozmiarFigury,przesunieciePoziome,przesunieciePionowe - 1))
                     przesunieciePionowe--; // odejmujemy poniewaz maleje w gore
                 break;
             case 'd':
             case 77:    // w prawo
-                if(czyMogeWykonacRuch(rozmiarFigury,przesunieciePoziome+1,przesunieciePionowe))
+                if(czyMogeWykonacRuch(rozmiarFigury,przesunieciePoziome + 1,przesunieciePionowe))
                     przesunieciePoziome++;
                 break;
             default:
