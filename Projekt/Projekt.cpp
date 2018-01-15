@@ -96,8 +96,8 @@ int main()
     {
         system("cls");
         rysujFigure(rozmiarFigury,przesunieciePoziome,przesunieciePionowe);
-        przycisk = getch();
-        
+        przycisk = _getch();
+
         switch(przycisk)
         {
             case '+':
@@ -107,15 +107,19 @@ int main()
                 rozmiarFigury--;
                 break;
             case 'a':
+            case 75:    // w lewos
                 przesunieciePoziome--;
                 break;
             case 's':
+            case 80:    // w dol
                 przesunieciePionowe++; // dodajemy poniewaz rosnie w dol
                 break;
             case 'w':
+            case 72:    // w gore
                 przesunieciePionowe--; // odejmujemy poniewaz maleje w gore
                 break;
             case 'd':
+            case 77:    // w prawo
                 przesunieciePoziome++;
                 break;
             default:
