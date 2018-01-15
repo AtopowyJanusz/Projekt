@@ -34,6 +34,30 @@ void wypiszZasady()
     cout<<"Zacznijmy zabawe!"<<endl;    
 }
 
+void wypiszBlad()
+{
+    system("cls");
+    cout << "Przekroczyles zakres ekranu" << endl;
+    cout << "Nacisnij klawisz aby sprobowac jeszcze raz";
+    getch();
+}
+
+bool czyMogeWykonacRuch(int rozmiarFigury, int przesunieciePoziome, int przesunieciePionowe)
+{
+    if((szerokoscEkranu/2 - rozmiarFigury/2 + przesunieciePoziome < 0) || // lewa krawedz
+       (wysokoscEkranu/2 - rozmiarFigury/2 + przesunieciePionowe < 0) || // gorna krawedz
+       (szerokoscEkranu/2 + rozmiarFigury/2 + przesunieciePoziome >= szerokoscEkranu) || // prawa krawedz
+       (wysokoscEkranu/2 + rozmiarFigury/2 + przesunieciePionowe >= wysokoscEkranu)) // dolna krawedz
+    {    
+        wypiszBlad();
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
 void rysujFigure(int rozmiarFigury, int przesunieciePoziome, int przesunieciePionowe)
 {
     for (int wiersz = 0; wiersz < rozmiarFigury; wiersz++)
@@ -75,7 +99,7 @@ void rysujFigure(int rozmiarFigury, int przesunieciePoziome, int przesunieciePio
         }
     }
 }
-    
+
 int main()
 {
     int rozmiarFigury,
@@ -105,26 +129,32 @@ int main()
         switch(przycisk)
         {
             case '+':
-                rozmiarFigury++;
+                if(czyMogeWykonacRuch(rozmiarFigury+1,przesunieciePoziome,przesunieciePionowe))
+                    rozmiarFigury++;
                 break;
             case '-':
-                rozmiarFigury--;
+                if(czyMogeWykonacRuch(rozmiarFigury-1,przesunieciePoziome,przesunieciePionowe))
+                    rozmiarFigury--;
                 break;
             case 'a':
             case 75:    // w lewos
-                przesunieciePoziome--;
+                if(czyMogeWykonacRuch(rozmiarFigury,przesunieciePoziome-1,przesunieciePionowe))
+                    przesunieciePoziome--;
                 break;
             case 's':
             case 80:    // w dol
-                przesunieciePionowe++; // dodajemy poniewaz rosnie w dol
+                if(czyMogeWykonacRuch(rozmiarFigury,przesunieciePoziome,przesunieciePionowe+1))
+                    przesunieciePionowe++; // dodajemy poniewaz rosnie w dol
                 break;
             case 'w':
             case 72:    // w gore
-                przesunieciePionowe--; // odejmujemy poniewaz maleje w gore
+                if(czyMogeWykonacRuch(rozmiarFigury,przesunieciePoziome,przesunieciePionowe-1))
+                    przesunieciePionowe--; // odejmujemy poniewaz maleje w gore
                 break;
             case 'd':
             case 77:    // w prawo
-                przesunieciePoziome++;
+                if(czyMogeWykonacRuch(rozmiarFigury,przesunieciePoziome+1,przesunieciePionowe))
+                    przesunieciePoziome++;
                 break;
             default:
                 break;
