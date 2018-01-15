@@ -50,6 +50,10 @@ void rysujFigure(int rozmiarFigury, int przesunieciePoziome, int przesunieciePio
                 }
                 else if(wiersz+kolumna == rozmiarFigury - 1)
                 {
+                    if(rozmiarFigury % 2 == 0)
+                    {
+                        cout << " ";
+                    }
                     cout << znakAscii;
                 }
                 else
@@ -87,9 +91,9 @@ int main()
 
     wypiszZasady();
 
-    cout << "Najpierw podaj znak ASCII, ktorym bedziemy rysowac" << endl;
+    cout << "Najpierw podaj znak ASCII, ktorym bedziemy rysowac: ";
     cin >> znakAscii;
-    cout << "Teraz podaj poczatkowy rozmiar figury : ";
+    cout << "Teraz podaj poczatkowy rozmiar figury: ";
     cin >> rozmiarFigury;
 
     do
