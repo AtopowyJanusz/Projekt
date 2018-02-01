@@ -103,23 +103,10 @@ void rysujFigure(int rozmiarFigury, int przesunieciePoziome, int przesunieciePio
     }
 }
 
-int main()
+void wczytajZnakASCII()
 {
-    int rozmiarFigury,
-        przesunieciePoziome = 0,
-        przesunieciePionowe = 0;
-    char przycisk;
     string wejscie;
-    
-    // Pobranie szerokosci i wysokosci ekranu
-    CONSOLE_SCREEN_BUFFER_INFO csbi;
-    GetConsoleScreenBufferInfo(console,&csbi);
-    szerokoscEkranu = csbi.dwSize.X;
-    wysokoscEkranu = csbi.dwSize.Y;
 
-    wypiszZasady();
-
-    cout << "Najpierw podaj znak ASCII, ktorym bedziemy rysowac: ";
     do {
         getline(cin,wejscie);
         if(wejscie.length() != 1)
@@ -130,8 +117,12 @@ int main()
             znakAscii = wejscie[0];
         }
     } while (wejscie.length() != 1);
+}
 
-    cout << "Teraz podaj poczatkowy rozmiar figury: ";
+int wczytajRozmiarFigury()
+{
+    int rozmiarFigury;
+
     do {
         cin >> rozmiarFigury;
         
@@ -141,7 +132,19 @@ int main()
             cin.ignore(256,'\n');
             cout << "Bledna wartosc rozmiaru figury. Podaj ponownie: ";
         }
+        else 
+        {
+            return rozmiarFigury;
+        }
     } while ((cin.fail()) || (rozmiarFigury < 0) || (rozmiarFigury > wysokoscEkranu));
+}
+
+void wczytajPrzycisk(int rozmiarFigury)
+{
+    int przesunieciePoziome = 0,
+        przesunieciePionowe = 0;
+
+    char przycisk;
 
     do
     {
@@ -160,7 +163,7 @@ int main()
                     rozmiarFigury--;
                 break;
             case 'a':
-            case 75:    // w lewos
+            case 75:    // w lewo
                 if(czyMogeWykonacRuch(rozmiarFigury,przesunieciePoziome - 1,przesunieciePionowe))
                     przesunieciePoziome--;
                 break;
@@ -183,6 +186,27 @@ int main()
                 break;
         }
     } while(przycisk != ESCAPE);
+}
+
+int main()
+{
+    int rozmiarFigury;
+    
+    // Pobranie szerokosci i wysokosci ekranu
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    GetConsoleScreenBufferInfo(console,&csbi);
+    szerokoscEkranu = csbi.dwSize.X;
+    wysokoscEkranu = csbi.dwSize.Y;
+
+    wypiszZasady();
+
+    cout << "Najpierw podaj znak ASCII, ktorym bedziemy rysowac: ";
+    wczytajZnakASCII();
+
+    cout << "Teraz podaj poczatkowy rozmiar figury: ";
+    rozmiarFigury = wczytajRozmiarFigury();
+
+    wczytajPrzycisk(rozmiarFigury);  
 
     return EXIT_SUCCESS;
 }
